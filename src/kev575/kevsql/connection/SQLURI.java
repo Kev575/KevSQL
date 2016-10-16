@@ -16,7 +16,7 @@ public class SQLURI {
 	 * Get a new instance of {@link SQLURI}
 	 * @param driver {@link SQLDriverType}
 	 * @param address ip or hostname of the server
-	 * @param port port in range of 1 - 65535
+	 * @param port port in range of 1 - 65535 (default: 3306)
 	 */
 	public SQLURI(SQLDriverType driver, String address, int port) {
 		if (driver == null) throw new NullPointerException("driver is null");
@@ -25,6 +25,24 @@ public class SQLURI {
 		this.driver = driver;
 		this.address = address;
 		this.port = port;
+		this.database = null;
+		try {
+			new URL("http://" + address);
+		} catch (MalformedURLException e) {
+			throw new IllegalArgumentException(address + " is in wrong format");
+		}
+	}
+	
+	/**
+	 * @param driver
+	 * @param address ip or hostname of the server
+	 */
+	public SQLURI(SQLDriverType driver, String address) {
+		if (driver == null) throw new NullPointerException("driver is null");
+		if (address == null) throw new NullPointerException("address is null");
+		this.driver = driver;
+		this.address = address;
+		this.port = 3306;
 		this.database = null;
 		try {
 			new URL("http://" + address);

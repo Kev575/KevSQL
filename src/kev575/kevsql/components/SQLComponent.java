@@ -1,7 +1,7 @@
-package kev575.kevsql.connection;
+package kev575.kevsql.components;
 
 /**
- * the base class
+ * the base class of all KevSQL components
  * @author Kev575
  */
 public interface SQLComponent {

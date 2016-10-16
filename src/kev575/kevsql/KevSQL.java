@@ -13,11 +13,13 @@ public final class KevSQL {
 	}
 	
 	/**
-	 * 
+	 * Create a connection
 	 * @param name
-	 * @return created {@link SQLConnection}
+	 * @return the created {@link SQLConnection}<br>It's in version 0.1 an instance of {@link KevSQLConnection}.
 	 */
 	public static SQLConnection createConnection(String name) {
+		if (connection.containsKey(name))
+			throw new IllegalStateException(new IllegalArgumentException("connection with key " + name + " already exists"));
 		connection.put(name, new KevSQLConnection() {
 		});
 		return connection.get(name);
@@ -51,6 +53,17 @@ public final class KevSQL {
 			throw new NullPointerException(name + " is not a valid connection");
 		getConnection(name).terminate();
 		connection.remove(name);
+	}
+	
+	/**
+	 * Removes a {@link SQLConnection} from the internal list, but doesn't closes it<br><br><b>Does not throw a {@link NullPointerException} when connection is illegal</b>
+	 * @param name {@link SQLConnection}'s Name
+	 * @return if the connection existsted and got removed
+	 */
+	public static boolean removeConnection(String name) {
+		if (!isConnectionExisting(name))
+			return false;
+		return connection.remove(name) != null;
 	}
 	
 }
